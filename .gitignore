@@ -10,3 +10,5 @@ basic-network/organizations/peerOrganizations
 basic-network/system-genesis-block
 
 basic-network/organizations/fabric-ca/org1
+basic-network/organizations/fabric-ca/org2
+basic-network/organizations/fabric-ca/org3
