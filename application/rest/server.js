@@ -16,13 +16,13 @@ app.get('/init', function (req, res) {
    let c = req.query.c;
    let cval = req.query.cval;
    let args = [a, aval, b, bval, c, cval];
-   sdk.send(false, 'Init', args, res);
+   sdk.send(false, 'init', args, res);
 });
 
 app.get('/query', function (req, res) {
    let name = req.query.name;
    let args = [name];
-   sdk.send(true, 'Query', args, res);
+   sdk.send(true, 'query', args, res);
 });
 
 app.use(express.static(path.join(__dirname, '../client')));
