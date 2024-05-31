@@ -51,7 +51,7 @@ function startSDK() {
 
 function upgradeCC() {
  # 체인코드 업그레이드
- docker exec cli scripts/upgradeCC.sh $1 $2
+ docker exec cli scripts/upgradeCC.sh $1 $2 $3
 }
 if [ "$1" == "generateCert" ]; then
  generateCert $2
@@ -66,7 +66,7 @@ elif [ "$1" == "joinChannel" ]; then
 elif [ "$1" == "updateAnchor" ]; then
  joinChannel updateAnchor
 elif [ "$1" == "installCC" ]; then
- installCC $2
+ installCC $2 $3
 elif [ "$1" == "checkCC" ]; then
  checkCC $2
 elif [ "$1" == "runCAdev" ]; then
@@ -76,7 +76,7 @@ elif [ "$1" == "runCAOrg3" ]; then
 elif [ "$1" == "startSDK" ]; then
  startSDK
 elif [ "$1" == "upgradeCC" ]; then
- upgradeCC $2 $3
+ upgradeCC $2 $3 $4
 elif [ "$1" == "clean" ]; then
  cleanNetwork
 elif [ "$1" == "dev" ]; then
@@ -102,8 +102,8 @@ elif [ "$1" == "prod" ]; then
  sleep 2
  sleep 2
  joinChannel createChannel
- joinChannel joinChannel
- joinChannel updateAnchor
+ joinChannel joinChannelProd
+ joinChannel updateAnchorProd
  sleep 2
  runCAdev
 else

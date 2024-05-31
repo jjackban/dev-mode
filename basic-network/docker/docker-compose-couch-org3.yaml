@@ -11,7 +11,7 @@ services:
       - COUCHDB_USER=admin
       - COUCHDB_PASSWORD=adminpw
     ports:
-      - "10984:5984"
+      - "9984:5984"
     networks:
       - test
 
@@ -31,7 +31,7 @@ services:
       - COUCHDB_USER=admin
       - COUCHDB_PASSWORD=adminpw
     ports:
-      - "11984:5984"
+      - "10984:5984"
     networks:
       - test
 
