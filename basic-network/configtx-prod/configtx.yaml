@@ -126,8 +126,6 @@ Organizations:
                 Type: Signature
                 Rule: "OR('Org3MSP.peer')"
 
-
-
 ################################################################################
 #
 #   SECTION: Capabilities
@@ -365,7 +363,6 @@ Profiles:
                     - *Org1
                     - *Org2
                     - *Org3
-
     DevChannel:
         Consortium: SampleConsortium
         <<: *ChannelDefaults
@@ -386,4 +383,3 @@ Profiles:
                 - *Org3
             Capabilities:
                 <<: *ApplicationCapabilities
-
