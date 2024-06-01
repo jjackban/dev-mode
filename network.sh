@@ -57,7 +57,7 @@ if [ "$1" == "generateCert" ]; then
 elif [ "$1" == "createConfigtxgen" ]; then
  createConfigtxgen $2
 elif [ "$1" == "upNetwork" ]; then
- upNetwork org1peer0 orderer
+ upNetwork $2
 elif [ "$1" == "createChannel" ]; then
  joinChannel createChannel
 elif [ "$1" == "joinChannel" ]; then
