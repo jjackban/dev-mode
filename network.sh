@@ -25,7 +25,7 @@ function upNetwork() {
 }
 function createConfigtxgen() {
  # 채널 정보 생성
- basic-network/scripts/createConfigtxgen.sh
+ basic-network/scripts/createConfigtxgen.sh $1
 }
 
 function joinChannel() {
@@ -55,7 +55,7 @@ function upgradeCC() {
 if [ "$1" == "generateCert" ]; then
  generateCert prod
 elif [ "$1" == "createConfigtxgen" ]; then
- createConfigtxgen
+ createConfigtxgen $2
 elif [ "$1" == "upNetwork" ]; then
  upNetwork org1peer0 orderer
 elif [ "$1" == "createChannel" ]; then
