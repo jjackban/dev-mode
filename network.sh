@@ -53,7 +53,7 @@ function upgradeCC() {
  docker exec cli scripts/upgradeCC.sh $1 $2
 }
 if [ "$1" == "generateCert" ]; then
- generateCert org1peer0 orderer
+ generateCert prod
 elif [ "$1" == "createConfigtxgen" ]; then
  createConfigtxgen
 elif [ "$1" == "upNetwork" ]; then
