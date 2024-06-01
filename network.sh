@@ -63,8 +63,12 @@ elif [ "$1" == "createChannel" ]; then
  joinChannel createChannel
 elif [ "$1" == "joinChannel" ]; then
  joinChannel joinChannel
+elif [ "$1" == "joinChannelProd" ]; then
+ joinChannel joinChannelProd
 elif [ "$1" == "updateAnchor" ]; then
  joinChannel updateAnchor
+elif [ "$1" == "updateAnchorProd" ]; then
+ joinChannel updateAnchorProd
 elif [ "$1" == "installCC" ]; then
  installCC $2 $3
 elif [ "$1" == "checkCC" ]; then
