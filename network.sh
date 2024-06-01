@@ -2,12 +2,16 @@
 
 function generateCert() {
  # 인증서 dev 모드 생성
- basic-network/scripts/generateCert.sh
+ basic-network/scripts/generateCert.sh $1
 }
 
 function runCAdev() {
  # CA dev 생성
  basic-network/scripts/runCAdev.sh
+}
+
+function runCAOrg3(){
+ basic-network/scripts/runCAOrg3.sh
 }
 
 function cleanNetwork() {
@@ -49,7 +53,7 @@ function upgradeCC() {
  docker exec cli scripts/upgradeCC.sh $1 $2
 }
 if [ "$1" == "generateCert" ]; then
- generateCert org1peer0 orderer
+ generateCert prod
 elif [ "$1" == "createConfigtxgen" ]; then
  createConfigtxgen
 elif [ "$1" == "upNetwork" ]; then
@@ -66,6 +70,8 @@ elif [ "$1" == "checkCC" ]; then
  checkCC $2
 elif [ "$1" == "runCAdev" ]; then
  runCAdev
+elif [ "$1" == "runCAOrg3" ]; then
+ runCAOrg3
 elif [ "$1" == "startSDK" ]; then
  startSDK
 elif [ "$1" == "upgradeCC" ]; then
