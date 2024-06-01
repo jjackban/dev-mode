@@ -2,7 +2,7 @@
 
 function generateCert() {
  # 인증서 dev 모드 생성
- basic-network/scripts/generateCert.sh
+ basic-network/scripts/generateCert.sh $1
 }
 
 function runCAdev() {
