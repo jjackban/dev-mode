@@ -10,6 +10,10 @@ function runCAdev() {
  basic-network/scripts/runCAdev.sh
 }
 
+function runCAOrg3(){
+ basic-network/scripts/runCAOrg3.sh
+}
+
 function cleanNetwork() {
  # 네트워크 전부 삭제
  basic-network/scripts/cleanNetwork.sh
@@ -66,6 +70,8 @@ elif [ "$1" == "checkCC" ]; then
  checkCC $2
 elif [ "$1" == "runCAdev" ]; then
  runCAdev
+elif [ "$1" == "runCAOrg3" ]; then
+ runCAOrg3
 elif [ "$1" == "startSDK" ]; then
  startSDK
 elif [ "$1" == "upgradeCC" ]; then
