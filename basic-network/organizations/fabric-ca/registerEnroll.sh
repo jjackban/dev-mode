@@ -87,7 +87,7 @@ cp ${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.exam
 echo "Generating the user msp"
 set -x
 ./bin/fabric-ca-client enroll -u https://user:userpw@ca.org3.example.com:10054 --caname ca-org3 -M ${PWD}/organizations/peerOrganizations/org3.example.com/users/user@org3.example.com/msp --tls.certfiles ${PWD}/organizations/fabric-ca/org3/tls-cert.pem
-{ set +x; } 2>/dev/nul
+{ set +x; } 2>/dev/null
 
 cp ${PWD}/organizations/peerOrganizations/org3.example.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/org3.example.com/users/user@org3.example.com/msp/config.yaml
 
