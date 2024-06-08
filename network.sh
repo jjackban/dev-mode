@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function generateCert() {
- # 인증서 생성
+ # 인증서 dev 모드 생성
  basic-network/scripts/generateCert.sh $1
 }
 
@@ -10,8 +10,7 @@ function runCAdev() {
  basic-network/scripts/runCAdev.sh
 }
 
-function runCAOrg3() {
- # CA org3 생성
+function runCAOrg3(){
  basic-network/scripts/runCAOrg3.sh
 }
 
@@ -22,7 +21,7 @@ function cleanNetwork() {
 
 function upNetwork() {
  # 네트워크 실행
- basic-network/scripts/upNetwork.sh $1
+ basic-network/scripts/upNetwork.sh $1 $2 $3 $4 $5 $6
 }
 function createConfigtxgen() {
  # 채널 정보 생성
@@ -51,7 +50,7 @@ function startSDK() {
 
 function upgradeCC() {
  # 체인코드 업그레이드
- docker exec cli scripts/upgradeCC.sh $1 $2 $3
+ docker exec cli scripts/upgradeCC.sh $1 $2
 }
 
 function runExplorer() {
@@ -60,7 +59,7 @@ function runExplorer() {
 }
 
 if [ "$1" == "generateCert" ]; then
- generateCert $2
+ generateCert prod
 elif [ "$1" == "createConfigtxgen" ]; then
  createConfigtxgen $2
 elif [ "$1" == "upNetwork" ]; then
@@ -76,7 +75,7 @@ elif [ "$1" == "updateAnchor" ]; then
 elif [ "$1" == "updateAnchorProd" ]; then
  joinChannel updateAnchorProd
 elif [ "$1" == "installCC" ]; then
- installCC $2 $3
+ installCC $2
 elif [ "$1" == "checkCC" ]; then
  checkCC $2
 elif [ "$1" == "runCAdev" ]; then
@@ -87,24 +86,20 @@ elif [ "$1" == "startSDK" ]; then
  startSDK
 elif [ "$1" == "upgradeCC" ]; then
  upgradeCC $2 $3 $4
-elif [ "$1" == "runExplorer" ]; then
- runExplorer
 elif [ "$1" == "clean" ]; then
  cleanNetwork
-elif [ "$1" == "dev" ]; then
- generateCert dev
+elif [ "$1" == "start" ]; then
+ generateCert
  sleep 2
- createConfigtxgen dev
+ createConfigtxgen
  sleep 2
- upNetwork dev
+ upNetwork org1peer0 orderer
  sleep 2
  joinChannel createChannel
  joinChannel joinChannel
  joinChannel updateAnchor
  sleep 2
  runCAdev
- sleep 2
- runExplorer
 elif [ "$1" == "prod" ]; then
  generateCert prod
  sleep 2
@@ -120,8 +115,6 @@ elif [ "$1" == "prod" ]; then
  joinChannel updateAnchorProd
  sleep 2
  runCAdev
- sleep 2
- runExplorer
 else
  echo -n "unknown parameter"
  exit 1

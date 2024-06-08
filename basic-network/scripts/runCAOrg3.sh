@@ -7,3 +7,4 @@ docker-compose -f docker-compose-ca-org3.yaml up -d
 sleep 3
 cd $GOPATH/src/dev-mode/basic-network
 ./organizations/fabric-ca/registerEnroll.sh org3
+
