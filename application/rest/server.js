@@ -1,41 +1,66 @@
-const express = require('express');
-const app = express();
-let path = require('path');
-let sdk = require('./sdk');
+var app = angular.module('application', []);
 
-const PORT = 8001;
-const HOST = '0.0.0.0';
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
+app.controller('AppCtrl', function($scope, appFactory){
+   $("#success_init").hide();
+   $("#success_qurey").hide();
+   $("#success_delete").hide();
+   $("#success_invoke").hide();
 
-app.get('/init', function (req, res) {
-   let a = req.query.a;
-   let aval = req.query.aval;
-   let args = [a, aval];
-   sdk.send(false, 'init', args, res);
+   $scope.initAB = function(){
+       appFactory.initAB($scope.abstore, function(data){
+           if(data == "")
+           $scope.init_ab = "success";
+           $("#success_init").show();
+       });
+   }
+   $scope.queryAB = function(){
+       appFactory.queryAB($scope.walletid, function(data){
+           $scope.query_ab = data;
+           $("#success_qurey").show();
+       });
+   }
+   $scope.deleteAB = function(){
+        appFactory.deleteAB($scope.walletid2, function(data){
+            if(data == "")
+            $scope.delete_ab = "User deleted successfully.";
+            $("#success_delete").show();
+        });
+    }
+    $scope.invokeAB = function(){
+        appFactory.invokeAB($scope.abstore2, function(data){
+            if(data == "")
+            $scope.invoke_ab = "success";
+            $("#success_invoke").show();
+        });
+    }
+});
+app.factory('appFactory', function($http){
+    var factory = {};
+
+    factory.initAB = function(data, callback){
+        $http.get('/init?a=' + data.a + '&aval=' + data.aval).success(function(output){
+            callback(output)
+        });
+    }
+    factory.queryAB = function(name, callback){
+        $http.get('/query?name=' + name).success(function(output){
+            callback(output)
+        });
+    }
+    factory.invokeAB = function(args, callback){
+        let sender = args.a;
+        let receiver = args.b;
+        let amount = args.amount; // 수정된 부분
+        $http.get('/invoke?sender=' + sender + '&receiver=' + receiver + '&amount=' + amount).success(function(output){
+            callback(output);
+        });
+    }
+
+    factory.deleteAB = function(name, callback){
+        $http.get('/delete?name=' + name).success(function(output){
+            callback(output);
+        });
+    }
+    return factory;
 });
 
-app.get('/query', function (req, res) {
-   let name = req.query.name;
-   let args = [name];
-   sdk.send(true, 'query', args, res);
-});
-
-app.get('/delete', function (req, res) {
-   let name = req.query.name;
-   let args = [name];
-   sdk.send(false, 'delete', args, res);
-});
-
-
-app.get('/invoke', function (req, res) {
-   let sender = req.query.sender;
-   let receiver = req.query.receiver;
-   let amount = req.query.amount;
-   let args = [sender, receiver, amount];
-   sdk.send(false, 'invoke', args, res);
-});
-
-app.use(express.static(path.join(__dirname, '../client')));
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
