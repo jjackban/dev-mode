@@ -7,36 +7,15 @@
 const shim = require('fabric-shim');
 const util = require('util');
 
-var ABstore = class {
+const ABstore = class {
 
   // Initialize the chaincode
   async Init(stub) {
     console.info('========= ABstore Init =========');
     let ret = stub.getFunctionAndParameters();
     console.info(ret);
-    let args = ret.params;
-    // initialise only if 4 parameters passed.
-    if (args.length != 4) {
-      return shim.error('Incorrect number of arguments. Expecting 4');
-    }
-
-    let A = args[0];
-    let B = args[2];
-    let Aval = args[1];
-    let Bval = args[3];
-
-    if (typeof parseInt(Aval) !== 'number' || typeof parseInt(Bval) !== 'number') {
-      return shim.error('Expecting integer value for asset holding');
-    }
-
     try {
-      await stub.putState(A, Buffer.from(Aval));
-      try {
-        await stub.putState(B, Buffer.from(Bval));
-        return shim.success();
-      } catch (err) {
-        return shim.error(err);
-      }
+      return shim.success();
     } catch (err) {
       return shim.error(err);
     }
@@ -57,6 +36,28 @@ var ABstore = class {
       console.log(err);
       return shim.error(err);
     }
+  }
+
+  async init(stub, args) {
+    // initialise only if 6 parameters passed.
+    if (args.length != 6) {
+      return shim.error('Incorrect number of arguments. Expecting 6');
+    }
+
+    let A = args[0];
+    let B = args[2];
+    let C = args[4];
+    let Aval = args[1];
+    let Bval = args[3];
+    let Cval = args[5];
+
+    if (typeof parseInt(Aval) !== 'number' || typeof parseInt(Bval) !== 'number') {
+      return shim.error('Expecting integer value for asset holding');
+    }
+
+    await stub.putState(A, Buffer.from(Aval));
+    await stub.putState(B, Buffer.from(Bval));
+    await stub.putState(C, Buffer.from(Cval));
   }
 
   async invoke(stub, args) {

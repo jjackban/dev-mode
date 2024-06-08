@@ -37,6 +37,7 @@ function dev() {
     --name ${1} \
     --version 1 \
     --package-id $PACKAGE_ID \
+    --init-required \
     --sequence 1 NA NA NA
   sleep 2
 
@@ -52,7 +53,25 @@ function dev() {
     --peerAddresses peer0.org1.example.com:7051 \
     --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \
     --version 1 \
+    --init-required \
     --sequence 1 NA NA NA
+  sleep 2
+
+  ## 체인코드 Init
+  echo "체인코드 Init"
+  peer chaincode invoke \
+    -o orderer.example.com:7050 \
+    --ordererTLSHostnameOverride orderer.example.com \
+    --waitForEvent \
+    --tls \
+    --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
+    -C channel1 \
+    -n ${1} \
+    --peerAddresses peer0.org1.example.com:7051 \
+    --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \
+    --isInit \
+    -c '{"Args":["Init"]}' \
+    --waitForEvent
 }
 
 function prod() {
