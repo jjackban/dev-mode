@@ -5,6 +5,8 @@ var app = angular.module('application', []);
 app.controller('AppCtrl', function($scope, appFactory){
    $("#success_init").hide();
    $("#success_qurey").hide();
+   $("#success_delete").hide();
+
    $scope.initAB = function(){
        appFactory.initAB($scope.abstore, function(data){
            if(data == "")
@@ -18,7 +20,14 @@ app.controller('AppCtrl', function($scope, appFactory){
            $("#success_qurey").show();
        });
    }
+   $scope.deleteAB = function(){
+        appFactory.deleteAB($scope.abstore, function(data){
+            $scope.delete_ab = "delete";
+            $("#success_delete").show();
+    });
+}
 });
+
 app.factory('appFactory', function($http){
       
     var factory = {};
@@ -33,6 +42,12 @@ app.factory('appFactory', function($http){
             callback(output)
         });
     }
+    factory.deleteAB = function(data, callback){
+        $http.get('/delete?a='+data.a).success(function(output){
+            callback(output)
+        });
+    }
+
     return factory;
  });
  
