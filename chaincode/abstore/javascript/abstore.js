@@ -40,24 +40,20 @@ const ABstore = class {
 
   async init(stub, args) {
     // initialise only if 6 parameters passed.
-    if (args.length != 6) {
+    if (args.length != 2) {
       return shim.error('Incorrect number of arguments. Expecting 6');
     }
 
-    let A = args[0];
-    let B = args[2];
-    let C = args[4];
-    let Aval = args[1];
-    let Bval = args[3];
-    let Cval = args[5];
+    let a = args[0];
 
-    if (typeof parseInt(Aval) !== 'number' || typeof parseInt(Bval) !== 'number') {
+    let aval = args[1];
+
+
+    if (typeof parseInt(aval) !== 'number') {
       return shim.error('Expecting integer value for asset holding');
     }
 
-    await stub.putState(A, Buffer.from(Aval));
-    await stub.putState(B, Buffer.from(Bval));
-    await stub.putState(C, Buffer.from(Cval));
+    await stub.putState(a, Buffer.from(aval));
   }
 
   async invoke(stub, args) {
