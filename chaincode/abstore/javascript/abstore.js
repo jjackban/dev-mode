@@ -50,14 +50,14 @@ const ABstore = class {
     let Aval = args[1]; // 두 번째 매개변수를 변수 Aval에 할당
 
 
-    if (typeof parseInt(Aval) !== 'number' || typeof parseInt(Bval) !== 'number') { // Aval 또는 Bval이 숫자가 아닌 경우
+    if (typeof parseInt(Aval) !== 'number') { // Aval 또는 Bval이 숫자가 아닌 경우
       return shim.error('Expecting integer value for asset holding'); // 오류 반환
     }
 
     await stub.putState(A, Buffer.from(Aval)); // A의 상태를 원장에 저장
   }
 
-  // 자산 이전을 수행하는 메서드
+  // 자산 이전을 수행하는 메서드 (거래)
   async invoke(stub, args) {
     if (args.length != 3) { // 매개변수가 3개가 아닌 경우
       throw new Error('Incorrect number of arguments. Expecting 3'); // 오류 발생
@@ -69,7 +69,7 @@ const ABstore = class {
       throw new Error('asset holding must not be empty'); // 오류 발생
     }
 
-    // 원장에서 상태 가져오기
+    // 원장에서 상태 가져오기 
     let Avalbytes = await stub.getState(A);
     if (!Avalbytes) { // A의 상태를 가져오지 못한 경우
       throw new Error('Failed to get state of asset holder A'); // 오류 발생
@@ -96,7 +96,7 @@ const ABstore = class {
     await stub.putState(B, Buffer.from(Bval.toString())); // B의 새로운 상태 저장
   }
 
-  // 상태에서 엔티티 삭제 메서드
+  // 상태에서 엔티티 삭제 메서드 (사용자 삭제)
   async delete(stub, args) {
     if (args.length != 1) { // 매개변수가 1개가 아닌 경우
       throw new Error('Incorrect number of arguments. Expecting 1'); // 오류 발생
@@ -108,7 +108,7 @@ const ABstore = class {
     await stub.deleteState(A); // A의 상태 삭제
   }
 
-  // 상태 조회 메서드
+  // 상태 조회 메서드 (정보 출력)
   async query(stub, args) {
     if (args.length != 1) { // 매개변수가 1개가 아닌 경우
       throw new Error('Incorrect number of arguments. Expecting name of the person to query'); // 오류 발생
