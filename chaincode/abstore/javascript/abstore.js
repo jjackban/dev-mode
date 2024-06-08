@@ -40,8 +40,8 @@ const ABstore = class {
 
   async init(stub, args) {
     // initialise only if 6 parameters passed.
-    if (args.length != 6) {
-      return shim.error('Incorrect number of arguments. Expecting 6');
+    if (args.length != 2) {
+      return shim.error('Incorrect number of arguments. Expecting 2');
     }
 
     let A = args[0];
