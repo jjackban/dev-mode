@@ -1,0 +1,10 @@
+{
+	"network-configs": {
+		"dev-mode": {
+			"name": "Dev Mode",
+			"profile": "./connection-profile/dev-mode.json"
+		}
+	},
+	"license": "Apache-2.0"
+ }
+ 

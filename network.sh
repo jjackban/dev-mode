@@ -53,6 +53,12 @@ function upgradeCC() {
  # 체인코드 업그레이드
  docker exec cli scripts/upgradeCC.sh $1 $2 $3
 }
+
+function runExplorer() {
+ # Explorer 실행
+ explorer/scripts/runExplorer.sh
+}
+
 if [ "$1" == "generateCert" ]; then
  generateCert $2
 elif [ "$1" == "createConfigtxgen" ]; then
@@ -81,6 +87,8 @@ elif [ "$1" == "startSDK" ]; then
  startSDK
 elif [ "$1" == "upgradeCC" ]; then
  upgradeCC $2 $3 $4
+elif [ "$1" == "runExplorer" ]; then
+ runExplorer
 elif [ "$1" == "clean" ]; then
  cleanNetwork
 elif [ "$1" == "dev" ]; then
@@ -95,6 +103,8 @@ elif [ "$1" == "dev" ]; then
  joinChannel updateAnchor
  sleep 2
  runCAdev
+ sleep 2
+ runExplorer
 elif [ "$1" == "prod" ]; then
  generateCert prod
  sleep 2
@@ -110,6 +120,8 @@ elif [ "$1" == "prod" ]; then
  joinChannel updateAnchorProd
  sleep 2
  runCAdev
+ sleep 2
+ runExplorer
 else
  echo -n "unknown parameter"
  exit 1
