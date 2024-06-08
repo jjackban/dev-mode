@@ -8,6 +8,9 @@ docker-compose -f docker-compose-prod-org3.yaml down --volumes --remove-orphans
 docker-compose -f docker-compose-ca.yaml down --volumes --remove-orphans
 docker-compose -f docker-compose-ca-org3.yaml down --volumes --remove-orphans
 
+cd $GOPATH/src/dev-mode/explorer
+docker-compose down --volumes --remove-orphans
+
 docker rm $(docker ps -aq)
 docker rmi $(docker images dev-* -q)
 docker volume prune -f
@@ -33,3 +36,7 @@ sudo rm -rf application/connection-org1.json
 #rm -rf application/package-lock.json
 #rm -rf application/node_modules
 
+echo "Explorer 관련 파일 삭제"
+## Explorer 관련 파일 삭제
+cd $GOPATH/src/dev-mode/explorer/
+sudo rm -rf pgdata/ wallet/
