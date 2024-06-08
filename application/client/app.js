@@ -22,7 +22,7 @@ app.controller('AppCtrl', function($scope, appFactory){
        });
    }
    $scope.deleteAB = function(){
-        appFactory.deleteAB($scope.walletid, function(data){
+        appFactory.deleteAB($scope.walletid2, function(data){
             if(data == "success")
                 $scope.delete_ab = "User deleted successfully.";
             else
@@ -31,7 +31,7 @@ app.controller('AppCtrl', function($scope, appFactory){
         });
     }
     $scope.invokeAB = function(){
-        appFactory.invokeAB($scope.abstore, function(data){
+        appFactory.invokeAB($scope.abstore2, function(data){
             if(data == "")
             $scope.invoke_ab = "success";
             $("#success_invoke").show();
