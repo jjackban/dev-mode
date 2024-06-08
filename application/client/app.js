@@ -5,6 +5,8 @@ var app = angular.module('application', []);
 app.controller('AppCtrl', function($scope, appFactory){
    $("#success_init").hide();
    $("#success_qurey").hide();
+   $("#success_delete").hide();
+
    $scope.initAB = function(){
        appFactory.initAB($scope.abstore, function(data){
            if(data == "")
@@ -18,6 +20,12 @@ app.controller('AppCtrl', function($scope, appFactory){
            $("#success_qurey").show();
        });
    }
+   $scope.deleteAB = function(){
+        appFactory.deleteAB($scope.deleteid, function(data){
+            $scope.delete_ab = "success";
+            $("#success_delete").show();
+        })
+   }
 });
 app.factory('appFactory', function($http){
       
@@ -30,6 +38,12 @@ app.factory('appFactory', function($http){
     }
     factory.queryAB = function(name, callback){
         $http.get('/query?name='+name).success(function(output){
+            callback(output)
+        });
+    }
+
+    factory.deleteAB = function(name, callback){
+        $http.get('/delete?name='+name).success(function(output){
             callback(output)
         });
     }

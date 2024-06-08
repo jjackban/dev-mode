@@ -52,6 +52,13 @@
         <p><input class="form-control" type="text" placeholder="Ex: A" ng-model="walletid">
         <input id="queryAB" type="submit" value="Search" class="btn btn-primary" ng-click="queryAB()"></p>
       </div>
+      <hr>
+      <div class="form-group">
+        <h5 style="color:green;margin-bottom:2%" id="success_delete">{{delete_ab}}</h5>
+        <label>Delete User</label>
+        <p><input class="form-control" type="text" placeholder="Ex: A" ng-model="deleteid">
+        <input id="deleteAB" type="submit" value="Delete" class="btn btn-primary" ng-click="deleteAB()"></p>
+      </div>
     </div>
   </body>
   <script type="text/javascript" src="app.js"> </script>
