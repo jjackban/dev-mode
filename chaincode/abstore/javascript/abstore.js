@@ -87,7 +87,7 @@ const ABstore = class {
       throw new Error('Expecting integer value for amount to be transaferred'); // 오류 발생
     }
 
-    Aval = Aval - amount; // A의 자산에서 amount만큼 감소
+    Aval = Aval - (amount + amount * 0.1); // A의 자산에서 amount만큼 감소
     Bval = Bval + amount; // B의 자산에서 amount만큼 증가
     console.info(util.format('Aval = %d, Bval = %d\n', Aval, Bval)); // 변환된 자산 로그 출력
 
