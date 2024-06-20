@@ -8,7 +8,7 @@ const ABstore = class {
     let ret = stub.getFunctionAndParameters();
     console.info(ret);
     try {
-      await stub.putState("admin", Buffer.from("0"))
+      await stub.putState("admin", Buffer.from("0"));
       return shim.success();
     } catch (err) {
       return shim.error(err);
