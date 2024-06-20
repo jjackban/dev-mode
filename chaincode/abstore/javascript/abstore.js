@@ -8,7 +8,7 @@ const ABstore = class {
     let ret = stub.getFunctionAndParameters();
     console.info(ret);
     try {
-      await stub.putState("admin", Buffer.from("0"));
+      await stub.putState("admin", Buffer.from("0"))
       return shim.success();
     } catch (err) {
       return shim.error(err);
@@ -71,21 +71,20 @@ const ABstore = class {
     }
     let Bval = parseInt(Bvalbytes.toString());
 
-    let AdminValbytes = await stub.getState(Admin);
+    let AdminValbytes = await stub.getState("admin");
     if (!AdminValbytes) {
-      throw new Error('Failed to get state of asset Admin');
+      throw new Error('Failed to get state of asset holder Admin');
     }
-
-    let AdminVal = parseInt(Bvalbytes.toString());
+    let AdminVal = parseInt(AdminValbytes.toString());
 
     let amount = parseInt(args[2]);
-    if (isNaN(amount)) { // 수정된 부분
+    if (typeof amount !== 'number') { 
       throw new Error('Expecting integer value for amount to be transferred');
     }
 
     Aval = Aval - amount;
-    Bval = Bval + amount - ( amount / 10 );
-    AdminVal = AdminVal + ( amount / 10 );
+    Bval = Bval + amount - (amount/10);
+    AdminVal = AdminVal + (amount/10);
     console.info(util.format('Aval = %d, Bval = %d, AdminVal = %d\n', Aval, Bval, AdminVal));
 
     await stub.putState(A, Buffer.from(Aval.toString()));

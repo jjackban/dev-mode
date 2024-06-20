@@ -7,6 +7,7 @@ app.controller('AppCtrl', function($scope, appFactory){
    $("#success_qurey").hide();
    $("#success_delete").hide();
    $("#success_invoke").hide();
+   $("#success_qurey_admin").hide();
 
    $scope.initAB = function(){
        appFactory.initAB($scope.abstore, function(data){
@@ -21,6 +22,12 @@ app.controller('AppCtrl', function($scope, appFactory){
            $("#success_qurey").show();
        });
    }
+   $scope.queryAdmin = function(){
+    appFactory.queryAB("admin", function(data){
+        $scope.query_admin = data;
+        $("#success_qurey_admin").show();
+    });
+}
    $scope.deleteAB = function(){
         appFactory.deleteAB($scope.walletid2, function(data){
             if(data == "success")
@@ -53,10 +60,10 @@ app.factory('appFactory', function($http){
         });
     }
     factory.invokeAB = function(args, callback){
-        let sender = agrs.a;
-        let receiver = args.b;
-        let amount = args.c;
-        $http.get('/invoke?sender=' + sender+'&receiver=' + receiver + '&amount=' + amount).success(function(output){
+        let sender = args.a;  // 수정
+        let receiver = args.b;  // 수정
+        let amount = args.amount;  // 수정
+        $http.get('/invoke?sender=' + sender + '&receiver=' + receiver + '&amount=' + amount).success(function(output){
             callback(output);
         });
     }
