@@ -4,15 +4,24 @@ var app = angular.module('application', []);
 
 app.controller('AppCtrl', function($scope, appFactory){
    $("#success_init").hide();
+   $("#success_invoke").hide();
    $("#success_qurey").hide();
    $("#success_qurey_admin").hide();
    $("#success_delete").hide();
    $scope.initAB = function(){
-       $("#success_init").hide();
+   $("#success_init").hide();
        appFactory.initAB($scope.abstore, function(data){
            if(data == "")
            $scope.init_ab = "success";
            $("#success_init").show();
+       });
+   }
+   $scope.invokeAB = function(){
+       $("#success_invoke").hide();
+       appFactory.invokeAB($scope.invoke, function(data){
+           if(data == "")
+           $scope.invoke_ab = "success";
+           $("#success_invoke").show();
        });
    }
    $scope.queryAB = function(){
@@ -44,6 +53,11 @@ app.factory('appFactory', function($http){
  
     factory.initAB = function(data, callback){
         $http.get('/init?user='+data.a+'&userVal='+data.aval+'&b='+data.b+'&bval='+data.bval+'&c='+data.c+'&cval='+data.cval).success(function(output){
+            callback(output)
+        });
+    }
+    factory.invokeAB = function(data, callback){
+        $http.get('/invoke?sender='+data.sender+'&receiver='+data.receiver+'&amount='+data.amount).success(function(output){
             callback(output)
         });
     }

@@ -96,7 +96,7 @@ const ABstore = class {
 
     Aval = Aval - amount;
     Bval = Bval + amount - ( amount / 10 );
-    AdminVal = amount / 10;
+    AdminVal = AdminVal + ( amount / 10 );
     console.info(util.format('Aval = %d, Bval = %d, AdminVal = %d\n', Aval, Bval, AdminVal));
 
     // Write the states back to the ledger
