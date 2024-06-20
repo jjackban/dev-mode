@@ -27,6 +27,14 @@ app.get('/delete', function (req, res) {
    sdk.send(false, 'delete', args, res);
 });
 
+app.get('/transfer', function (req, res) {
+   let sender = req.query.sender;
+   let receiver = req.query.receiver;
+   let amount = req.query.amount;
+   let args = [sender, receiver, amount];
+   sdk.send(false, 'transfer', args, res);
+});
+
 app.use(express.static(path.join(__dirname, '../client')));
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);
