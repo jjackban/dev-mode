@@ -67,7 +67,8 @@ const ABstore = class {
 
     let A = args[0];
     let B = args[1];
-    if (!A || !B) {
+    let Admin = args[2];
+    if (!A || !B || !Admin) {
       throw new Error('asset holding must not be empty');
     }
 
@@ -83,6 +84,12 @@ const ABstore = class {
       throw new Error('Failed to get state of asset holder B');
     }
     let Bval = parseInt(Bvalbytes.toString());
+
+    let Adminvalbytes = await stub.getState(Admin);
+    if (!Adminvalbytes) {
+      throw new Error('Failed to get state of asset holder A');
+    }
+    let Adminval = parseInt(Adminvalbytes.toString());
     // Perform the execution
     let amount = parseInt(args[2]);
     if (typeof amount !== 'number') {
@@ -90,14 +97,15 @@ const ABstore = class {
     }
     Aval = Aval - amount;
     Bval = Bval + amount - ( amount / 10 );
-    Cval = Cval + ( amount / 10 );
-    console.info(util.format('Aval = %d, Bval = %d, Cval = %d\n', Aval, Bval, Cval));
+    Adminval = Adminval + ( amount / 10 );
+    console.info(util.format('Aval = %d, Bval = %d, Adminval = %d\n', Aval, Bval, Adminval));
+
     // Write the states back to the ledger
     await stub.putState(A, Buffer.from(Aval.toString()));
     await stub.putState(B, Buffer.from(Bval.toString()));
-    await stub.putState(C, Buffer.from(Cval.toString()));
+    await stub.putState(Admin, Buffer.from(Adminval.toString()));
   }
-  
+
   // Deletes an entity from state
   async delete(stub, args) {
     if (args.length != 1) {
