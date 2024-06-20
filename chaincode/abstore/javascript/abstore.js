@@ -89,13 +89,15 @@ const ABstore = class {
       throw new Error('Expecting integer value for amount to be transaferred');
     }
     Aval = Aval - amount;
-    Bval = Bval + amount;
-    console.info(util.format('Aval = %d, Bval = %d\n', Aval, Bval));
+    Bval = Bval + amount - ( amount / 10 );
+    Cval = Cval + ( amount / 10 );
+    console.info(util.format('Aval = %d, Bval = %d, Cval = %d\n', Aval, Bval, Cval));
     // Write the states back to the ledger
     await stub.putState(A, Buffer.from(Aval.toString()));
     await stub.putState(B, Buffer.from(Bval.toString()));
+    await stub.putState(C, Buffer.from(Cval.toString()));
   }
-
+  
   // Deletes an entity from state
   async delete(stub, args) {
     if (args.length != 1) {
