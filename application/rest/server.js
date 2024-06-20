@@ -29,6 +29,13 @@ app.get('/delete', function (req, res) {
     let args = [sender, receiver, amount];
     sdk.send(false, 'invoke', args, res);
  });
+ 
+ app.get('/query', function (req, res) {
+    let name = req.query.name;
+    let args = [name];
+    sdk.send(true, 'query', args, res);
+ });
+ 
 
 app.use(express.static(path.join(__dirname, '../client')));
 app.listen(PORT, HOST);
