@@ -8,6 +8,7 @@ const ABstore = class {
     let ret = stub.getFunctionAndParameters();
     console.info(ret);
     try {
+      await stub.putState("admin", Buffer.from("0"));
       return shim.success();
     } catch (err) {
       return shim.error(err);
@@ -53,6 +54,7 @@ const ABstore = class {
 
     let A = args[0];
     let B = args[1];
+    let Admin = "admin";
     if (!A || !B) {
       throw new Error('asset holding must not be empty');
     }
@@ -69,17 +71,26 @@ const ABstore = class {
     }
     let Bval = parseInt(Bvalbytes.toString());
 
+    let AdminValbytes = await stub.getState(Admin);
+    if (!AdminValbytes) {
+      throw new Error('Failed to get state of asset Admin');
+    }
+
+    let AdminVal = parseInt(Bvalbytes.toString());
+
     let amount = parseInt(args[2]);
     if (isNaN(amount)) { // 수정된 부분
       throw new Error('Expecting integer value for amount to be transferred');
     }
 
-    Aval = Aval - (amount + amount * 0.1);
-    Bval = Bval + amount;
-    console.info(util.format('Aval = %d, Bval = %d\n', Aval, Bval));
+    Aval = Aval - amount;
+    Bval = Bval + amount - ( amount / 10 );
+    AdminVal = AdminVal + ( amount / 10 );
+    console.info(util.format('Aval = %d, Bval = %d, AdminVal = %d\n', Aval, Bval, AdminVal));
 
     await stub.putState(A, Buffer.from(Aval.toString()));
     await stub.putState(B, Buffer.from(Bval.toString()));
+    await stub.putState(Admin, Buffer.from(AdminVal.toString()));
   }
 
   async delete(stub, args) {
