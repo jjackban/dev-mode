@@ -22,6 +22,13 @@ app.controller('AppCtrl', function ($scope, appFactory) {
             $("#success_qurey").show();
         });
     }
+    $scope.queryAdmin = function(){
+        $("#success_qurey_admin").hide();
+        appFactory.queryAB("admin", function(data){
+            $scope.query_admin = data;
+            $("#success_qurey_admin").show();
+        });
+    }
     $scope.deleteAB = function () {
         $("#success_delete").hide();
         appFactory.deleteAB($scope.deleteid, function (data) {
