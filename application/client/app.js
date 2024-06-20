@@ -5,6 +5,7 @@ var app = angular.module('application', []);
 app.controller('AppCtrl', function($scope, appFactory){
    $("#success_init").hide();
    $("#success_qurey").hide();
+   $("#success_qurey_admin").hide();
    $("#success_delete").hide();
    $scope.initAB = function(){
        $("#success_init").hide();
@@ -19,6 +20,13 @@ app.controller('AppCtrl', function($scope, appFactory){
        appFactory.queryAB($scope.walletid, function(data){
            $scope.query_ab = data;
            $("#success_qurey").show();
+       });
+   }
+   $scope.queryAdmin = function(){
+       $("#success_qurey_admin").hide();
+       appFactory.queryAB("admin", function(data){
+           $scope.query_admin = data;
+           $("#success_qurey_admin").show();
        });
    }
    $scope.deleteAB = function(){
