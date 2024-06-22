@@ -29,12 +29,6 @@ app.get('/invoke', function (req, res) {
    sdk.send(false, 'invoke', args, res);
 });
 
-app.get('/delete', function (req, res) {
-   let name = req.query.name;
-   let args = [name];
-   sdk.send(false, 'delete', args, res);
-});
-
 app.get('/query', function (req, res) {
    let name = req.query.name;
    let args = [name];
