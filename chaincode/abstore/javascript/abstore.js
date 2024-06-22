@@ -45,15 +45,15 @@ const ABstore = class {
       return shim.error('Incorrect number of arguments. Expecting 6');
     }
 
-    let a = args[0];
+    let user = args[0];
 
-    let aval = args[1];
+    let userval = args[1];
 
 
-    if (typeof parseInt(aval) !== 'number') {
+    if (typeof parseInt(userval) !== 'number') {
       return shim.error('Expecting integer value for asset holding');
     }
-    await stub.putState(a, Buffer.from(aval));
+    await stub.putState(user, Buffer.from(userval));
   }
 
   async invoke(stub, args) {

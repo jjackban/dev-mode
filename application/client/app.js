@@ -9,7 +9,7 @@ app.controller('AppCtrl', function($scope, appFactory){
    $("#success_admin").hide();
    $("#success_delete").hide();
    $scope.initAB = function(){
-       appFactory.initAB($scope.abstore, function(data){
+       appFactory.initAB($scope.userinfo, function(data){
            if(data == "")
            $scope.init_ab = "success";
            $("#success_init").show();
@@ -47,7 +47,7 @@ app.factory('appFactory', function($http){
     var factory = {};
  
     factory.initAB = function(data, callback){
-        $http.get('/init?a='+data.a+'&aval='+data.aval).success(function(output){
+        $http.get('/init?user='+data.user+'&userval='+data.userval).success(function(output){
             callback(output)
         });
     }
@@ -61,7 +61,7 @@ app.factory('appFactory', function($http){
             callback(output)
         });
     }
-    factory.deleteAb = (name, callback) => {
+    factory.deleteAB = (name, callback) => {
         $http.get('/delete?name='+name).success((output) => {
             callback(output)
         })

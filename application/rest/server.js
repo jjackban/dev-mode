@@ -9,10 +9,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
 app.get('/init', function (req, res) {
-   let a = req.query.a;
-   let aval = req.query.aval;
+   let user = req.query.user;
+   let userval = req.query.userval;
    
-   let args = [a, aval];
+   let args = [user, userval];
    sdk.send(false, 'init', args, res);
 });
 
