@@ -7,6 +7,7 @@ app.controller('AppCtrl', function($scope, appFactory){
    $("#success_qurey").hide();
    $("#success_delete").hide();
    $("#success_transfer").hide();
+   $("#success_searchadmin").hide();
 
    $scope.initAB = function(){
        appFactory.initAB($scope.abstore, function(data){
@@ -33,6 +34,13 @@ app.controller('AppCtrl', function($scope, appFactory){
             $("#success_transfer").show();
         });
       };
+    $scope.searchAdmin = function() {
+        appFactory.queryAB("Admin", function(data){
+            $scope.search_admin = data;
+            $("#success_searchadmin").show();
+        });
+    }
+    
 });
 
 app.factory('appFactory', function($http){
@@ -59,6 +67,12 @@ app.factory('appFactory', function($http){
         $http.get('/transfer?sender='+data.sender+'&receiver='+data.receiver+'&amount='+data.amount).success(function(output){
             callback(output)
         });
+    }
+
+    factory.searchAdmin = function(callback){
+        $http.get('/query?name=admin').success(function(output){
+            callback(output)
+        }); 
     }
 
 

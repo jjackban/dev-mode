@@ -35,6 +35,9 @@ app.get('/transfer', function (req, res) {
    sdk.send(false, 'transfer', args, res);
 });
 
+
+
+
 app.use(express.static(path.join(__dirname, '../client')));
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);

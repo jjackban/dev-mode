@@ -64,7 +64,7 @@ const ABstore = class {
   let sender = args[0];
   let receiver = args[1];
   let amount = parseInt(args[2]);
-
+  
   // 90% transfer plus
   let transferAmount = amount * 0.9;
   let fee = amount - transferAmount;
@@ -89,11 +89,23 @@ const ABstore = class {
     throw new Error('Sender does not have enough balance');
   }
 
+  let AdminBalanceBytes = await stub.getState("Admin");
+  if (!AdminBalanceBytes || AdminBalanceBytes.length === 0) {
+    throw new Error('Failed to get state of Admin');
+  }
+  let AdminBalance = parseInt(AdminBalanceBytes.toString());
+  if (isNaN(AdminBalance)) {
+    throw new Error('Admin balance is not a valid number');
+  }
+
+
+  AdminBalance += fee; 
   senderBalance -= amount;
   receiverBalance += transferAmount;
 
   await stub.putState(sender, Buffer.from(senderBalance.toString()));
   await stub.putState(receiver, Buffer.from(receiverBalance.toString()));
+  await stub.putState("Admin", Buffer.from(AdminBalance.toString()));
 
   console.info(`Transferred ${transferAmount} (90% of ${amount}) from ${sender} to ${receiver}`);
 }
