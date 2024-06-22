@@ -70,13 +70,13 @@ const ABstore = class {
 
     // Get the state from the ledger
     let Avalbytes = await stub.getState(A);
-    if (!Avalbytes) {
+    if (!Avalbytes || Avalbytes.length === 0) {
       throw new Error('Failed to get state of asset holder A');
     }
     let Aval = parseInt(Avalbytes.toString());
 
     let Bvalbytes = await stub.getState(B);
-    if (!Bvalbytes) {
+    if (!Bvalbytes || Bvalbytes.length === 0) {
       throw new Error('Failed to get state of asset holder B');
     }
 
