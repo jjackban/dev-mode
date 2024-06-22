@@ -40,19 +40,20 @@ const ABstore = class {
   }
 
   async init(stub, args) {
-    // initialise only if 2 parameters passed.
+    // initialise only if 6 parameters passed.
     if (args.length != 2) {
-      return shim.error('Incorrect number of arguments. Expecting 2');
+      return shim.error('Incorrect number of arguments. Expecting 6');
     }
 
-    let A = args[0];
-    let Aval = args[1];
+    let a = args[0];
 
-    if (typeof parseInt(Aval) !== 'number') {
+    let aval = args[1];
+
+
+    if (typeof parseInt(aval) !== 'number') {
       return shim.error('Expecting integer value for asset holding');
     }
-
-    await stub.putState(A, Buffer.from(Aval));
+    await stub.putState(a, Buffer.from(aval));
   }
 
   async invoke(stub, args) {
@@ -62,7 +63,7 @@ const ABstore = class {
 
     let A = args[0];
     let B = args[1];
-    let Admin = "admin";
+    let Admin = 'admin';
     if (!A || !B) {
       throw new Error('asset holding must not be empty');
     }
@@ -81,13 +82,11 @@ const ABstore = class {
 
     let Bval = parseInt(Bvalbytes.toString());
 
-    let AdminValbytes = await stub.getState(Admin);
-    if (!AdminValbytes) {
-      throw new Error('Failed to get state of asset Admin');
+    let Adminvalbytes = await stub.getState(Admin);
+    if (!Adminvalbytes) {
+      throw new Error('Failed to get state of asset holder Admin');
     }
-
-    let AdminVal = parseInt(Bvalbytes.toString());
-
+    let Adminval = parseInt(Adminvalbytes.toString());
     // Perform the execution
     let amount = parseInt(args[2]);
     if (typeof amount !== 'number') {
@@ -95,15 +94,14 @@ const ABstore = class {
     }
 
     Aval = Aval - amount;
-    Bval = Bval + amount - ( amount / 10 );
-    AdminVal = AdminVal + ( amount / 10 );
-    console.info(util.format('Aval = %d, Bval = %d, AdminVal = %d\n', Aval, Bval, AdminVal));
+    Bval = Bval + amount - (amount / 10);
+    Adminval = Adminval + (amount / 10);
+    console.info(util.format('Aval = %d, Bval = %d, Adminval = %d\n', Aval, Bval, Adminval));
 
     // Write the states back to the ledger
     await stub.putState(A, Buffer.from(Aval.toString()));
     await stub.putState(B, Buffer.from(Bval.toString()));
-    await stub.putState(Admin, Buffer.from(AdminVal.toString()));
-
+    await stub.putState(Admin, Buffer.from(Adminval.toString()));
   }
 
   // Deletes an entity from state
