@@ -15,6 +15,7 @@ const ABstore = class {
     let ret = stub.getFunctionAndParameters();
     console.info(ret);
     try {
+      await stub.putState("admin", Buffer.from("0"));
       return shim.success();
     } catch (err) {
       return shim.error(err);
@@ -39,7 +40,6 @@ const ABstore = class {
   }
 
   async init(stub, args) {
-    // initialise only if 6 parameters passed.
     if (args.length != 2) {
       return shim.error('Incorrect number of arguments. Expecting 2');
     }
@@ -60,6 +60,7 @@ const ABstore = class {
 
     let A = args[0];
     let B = args[1];
+    let Admin = "admin";
     if (!A || !B) {
       throw new Error('asset holding must not be empty');
     }
@@ -77,6 +78,14 @@ const ABstore = class {
     }
 
     let Bval = parseInt(Bvalbytes.toString());
+
+    let AdminValbytes = await stub.getState(Admin);
+    if (!AdminValbytes) {
+      throw new Error('Failed to get state of asset Admin');
+    }
+
+    let AdminVal = parseInt(Bvalbytes.toString());
+
     // Perform the execution
     let amount = parseInt(args[2]);
     if (typeof amount !== 'number') {
@@ -84,12 +93,14 @@ const ABstore = class {
     }
 
     Aval = Aval - amount;
-    Bval = Bval + amount;
-    console.info(util.format('Aval = %d, Bval = %d\n', Aval, Bval));
+    Bval = Bval + amount - ( amount / 10 );
+    AdminVal = AdminVal + ( amount / 10 );
+    console.info(util.format('Aval = %d, Bval = %d, AdminVal = %d\n', Aval, Bval, AdminVal));
 
     // Write the states back to the ledger
     await stub.putState(A, Buffer.from(Aval.toString()));
     await stub.putState(B, Buffer.from(Bval.toString()));
+    await stub.putState(Admin, Buffer.from(AdminVal.toString()));
 
   }
 
