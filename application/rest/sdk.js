@@ -26,7 +26,6 @@ async function send(type, func, args, res, result){
                 discovery: { enabled: true, asLocalhost: false }
             });
             console.log('Success to connect network');
-
             const network = await gateway.getNetwork(channelName);
             console.log('Success to connect channel1');
             const contract = network.getContract(chaincodeName);
