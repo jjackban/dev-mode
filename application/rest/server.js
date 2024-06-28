@@ -16,6 +16,32 @@ app.get('/init', function (req, res) {
    sdk.send(false, 'init', args, res);
 });
 
+app.get('/charge', function (req, res) {
+   let user = req.query.user;
+   let userval = req.query.userval;
+   
+   let args = [user, userval];
+   sdk.send(false, 'charge', args, res);
+});
+
+app.get('/initItem', function (req, res) {
+   let itemName = req.query.itemName;
+   let styleNum = req.query.styleNum;
+   let brand = req.query.brand;
+   let inventory = req.query.inventory;
+   
+   let args = [itemName, styleNum, brand, inventory];
+   sdk.send(false, 'initItem', args, res);
+});
+
+app.get('/purchaseItem', function (req, res) {
+   let user = req.query.user;
+   let itemId = req.query.itemId;
+   
+   let args = [user, itemId];
+   sdk.send(false, 'purchaseItem', args, res);
+});
+
 app.get('/invoke', function (req, res) {
    let sender = req.query.sender;
    let reciever = req.query.reciever;
@@ -23,6 +49,18 @@ app.get('/invoke', function (req, res) {
    
    let args = [sender, reciever, value];
    sdk.send(false, 'invoke', args, res);
+});
+
+app.get('/queryitem', function (req, res) {
+   let itemId = req.query.itemId;
+   let args = [itemId];
+   sdk.send(true, 'queryItem', args, res);
+});
+
+app.get('/querypurchase', function (req, res) {
+   let user = req.query.user;
+   let args = [user];
+   sdk.send(true, 'queryPurchase', args, res);
 });
 
 app.get('/query', function (req, res) {
