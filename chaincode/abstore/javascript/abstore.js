@@ -39,21 +39,55 @@ const ABstore = class {
     }
   }
 
+  async charge(stub, args) {
+    if (args.length != 2) {
+      throw new Error('Incorrect number of arguments. Expecting 3');
+    }
+
+    let user = args[0];
+
+    let Uservalbytes = await stub.getState(user);
+    if (!Uservalbytes || Uservalbytes.length === 0) {
+      throw new Error('Failed to get state of asset holder A');
+    }
+    let Userval = parseInt(Uservalbytes.toString());
+
+    let amount = parseInt(args[1]);
+    if (typeof amount !== 'number') {
+      throw new Error('Expecting integer value for amount to be transaferred');
+    }
+
+    Userval = Userval + amount;
+    console.info(util.format('Userval = %d\n', Userval));
+
+    // Write the states back to the ledger
+    await stub.putState(user, Buffer.from(Userval.toString()));
+  }
+
   async init(stub, args) {
-    // initialise only if 6 parameters passed.
     if (args.length != 2) {
       return shim.error('Incorrect number of arguments. Expecting 6');
     }
 
     let user = args[0];
 
+    let userPurchase = user + '_userPurchases';
+
     let userval = args[1];
+
+    let purchase= {
+      purchases: []
+    };
 
 
     if (typeof parseInt(userval) !== 'number') {
       return shim.error('Expecting integer value for asset holding');
     }
-    await stub.putState(user, Buffer.from(userval));
+
+    let purchaseJSON = JSON.stringify(purchase);
+
+    await stub.putState(user, userval);
+    await stub.putState(userPurchase, Buffer.from(purchaseJSON));
   }
 
   async invoke(stub, args) {
@@ -138,6 +172,115 @@ const ABstore = class {
     console.info(jsonResp);
     return Avalbytes;
   }
+
+  async initItem(stub, args) {
+    if (args.length != 4) {
+      throw new Error('Incorrect number of arguments. Expecting 4');
+    }
+  
+    let itemName = args[0];
+    let styleNum = args[1];
+    let brand = args[2];
+    let inventory = args[3];
+  
+    if (!itemName || !styleNum || !brand || !inventory) {
+      throw new Error('Item details must not be empty');
+    }
+  
+    // Generate itemId using current time and seller information
+    let itemId = `${brand}_${styleNum}`;
+  
+    let item = {
+      id: itemId,
+      name: itemName,
+      inventory: parseFloat(inventory),
+    };
+  
+    let itemJSON = JSON.stringify(item);
+  
+    await stub.putState(itemId, Buffer.from(itemJSON));
+  }
+
+  async purchaseItem(stub, args) {
+    if (args.length != 2) {
+      throw new Error('Incorrect number of arguments. Expecting 2');
+    }
+  
+    let user = args[0];
+    let userPurchase = user + '_userPurchases';
+    let itemId = args[1];
+  
+    // 원장으로부터 사용자 상태 가져오기
+    let userBytes = await stub.getState(userPurchase);
+    if (!userBytes || userBytes.length === 0) {
+      throw new Error(`User ${user} does not exist`);
+    }
+    let userObj = JSON.parse(userBytes.toString());
+  
+    // 원장으로부터 아이템 상태 가져오기
+    let itemBytes = await stub.getState(itemId);
+    if (!itemBytes || itemBytes.length === 0) {
+      throw new Error(`Item ${itemId} does not exist`);
+    }
+    let itemObj = JSON.parse(itemBytes.toString());
+  
+    // 아이템 재고 감소
+    if (itemObj.inventory <= 0) {
+      throw new Error(`Item ${itemId} is out of stock`);
+    }
+    itemObj.inventory -= 1;
+  
+    // 사용자의 구매 목록에 아이템 추가
+    userObj.purchases.push(itemId);
+  
+    // 상태 업데이트
+    await stub.putState(userPurchase, Buffer.from(JSON.stringify(userObj)));
+    await stub.putState(itemId, Buffer.from(JSON.stringify(itemObj)));
+  }
+
+  async queryItem(stub, args) {
+    if (args.length != 1) {
+      throw new Error('Incorrect number of arguments. Expecting item ID');
+    }
+  
+    let itemId = args[0];
+  
+    // Get the state from the ledger
+    let itemBytes = await stub.getState(itemId);
+    if (!itemBytes) {
+      throw new Error('Failed to get state for ' + itemId);
+    }
+  
+    let item = JSON.parse(itemBytes.toString());
+  
+    console.info('Query Item Response:');
+    console.info(item);
+  
+    return Buffer.from(JSON.stringify(item));
+  }
+
+  async queryPurchase(stub, args) {
+    if (args.length != 1) {
+      throw new Error('Incorrect number of arguments. Expecting item ID');
+    }
+  
+    let user = args[0];
+    let userPurchase = user + '_userPurchases';
+  
+    // Get the state from the ledger
+    let userBytes = await stub.getState(userPurchase);
+    if (!userBytes) {
+      throw new Error('Failed to get state for ' + userPurchase);
+    }
+  
+    let purchase = JSON.parse(userBytes.toString());
+  
+    console.info('Query purchase Response:');
+    console.info(purchase);
+  
+    return Buffer.from(JSON.stringify(purchase));
+  }
+
 };
 
 shim.start(new ABstore());
