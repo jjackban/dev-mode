@@ -57,6 +57,17 @@
       </div>
       <hr>
       <div class="form-group">
+        <label>Transfer</label>
+        <h5 style="color:green;margin-bottom:2%" id="success_transfer">{{transfer_ab}}</h5>
+        <br>
+        chaincode: <input class="form-control" type="text" placeholder="Ex: abstore1" ng-model="transfer.chaincode">
+        from: <input class="form-control" type="text" placeholder="Ex: Hyper" ng-model="transfer.from">
+        to: <input class="form-control" type="text" placeholder="Ex: Ledger" ng-model="transfer.to">
+        Amount: <input class="form-control" type="text" placeholder="Ex: 10" ng-model="transfer.amount">
+        <input id="transferAB" type="submit" value="Send" class="btn btn-primary" ng-click="transferAB()">
+      </div>
+      <hr>
+      <div class="form-group">
         <h5 style="color:green;margin-bottom:2%" id="success_qurey">{{query_ab}}</h5>
         <label>User</label>
         <p><input class="form-control" type="text" placeholder="Ex: A" ng-model="walletid">

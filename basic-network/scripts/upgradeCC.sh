@@ -102,7 +102,8 @@ function prod(){
 
   ## 체인코드 패키지 이름 환경변수 지정
   peer lifecycle chaincode queryinstalled >&log.txt
-  export PACKAGE_ID=`sed -n '/Package/{s/^Package ID: //; s/, Label:.*$//; $p;}' log.txt`
+  export PACKAGE_ID=`sed -n "/${1}/s/.*Package ID: \([^,]*\).*/\1/p" log.txt`
+
   export SEQ=`sed -n '/'${1}'_/p' log.txt | wc -l`
 
   echo "packgeID=$PACKAGE_ID"

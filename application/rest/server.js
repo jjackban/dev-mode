@@ -29,6 +29,15 @@ app.get('/invoke', function (req, res) {
    sdk.send(false, 'invoke', args, res);
 });
 
+app.get('/transfer', function (req, res) {
+   let chaincode = req.query.chaincode;
+   let from = req.query.from;
+   let to = req.query.to;
+   let amount = req.query.amount;
+   let args = [chaincode, from, to, amount];
+   sdk.send(false, 'transferPoint', args, res);
+});
+
 app.get('/query', function (req, res) {
    let name = req.query.name;
    let args = [name];

@@ -5,6 +5,7 @@ var app = angular.module('application', []);
 app.controller('AppCtrl', function($scope, appFactory){
    $("#success_init").hide();
    $("#success_invoke").hide();
+   $("#success_transfer").hide();
    $("#success_qurey").hide();
    $("#success_qurey_admin").hide();
    $("#success_delete").hide();
@@ -22,6 +23,15 @@ app.controller('AppCtrl', function($scope, appFactory){
            if(data == "")
            $scope.invoke_ab = "success";
            $("#success_invoke").show();
+       });
+   }
+   $scope.transferAB = function(){
+       $("#success_transfer").hide();
+       console.log('test');
+       appFactory.transferAB($scope.transfer, function(data){
+           if(data == "")
+           $scope.transfer_ab = "success";
+           $("#success_transfer").show();
        });
    }
    $scope.queryAB = function(){
@@ -58,6 +68,11 @@ app.factory('appFactory', function($http){
     }
     factory.invokeAB = function(data, callback){
         $http.get('/invoke?sender='+data.sender+'&receiver='+data.receiver+'&amount='+data.amount).success(function(output){
+            callback(output)
+        });
+    }
+    factory.transferAB = function(data, callback){
+        $http.get('/transfer?chaincode='+data.chaincode+'&from='+data.from+'&to='+data.to+'&amount='+data.amount).success(function(output){
             callback(output)
         });
     }
